@@ -7,8 +7,9 @@ export interface GameSetupProps {
   onDone: (settings: GameSettings) => void;
 }
 
+const cardSets = createAllCardSets();
+
 export default function GameSetup({ onDone }: GameSetupProps) {
-  const cardSets = createAllCardSets();
   const [cardSetSelection, setCardSetSelection] = useState<boolean[]>(
     Array(cardSets.length).fill(false)
   );

@@ -1,41 +1,28 @@
 import { useState } from "react";
 import "./App.css";
-import { createCardSet } from "./tabuada";
-import Game from "./Game";
+import ControllerApp from "./ControllerApp";
 import { GameMode } from "./GameMode";
-import generateCardSequence from "./generateCardSequence";
-import GameSetup from "./GameSetup";
-import { AppState } from "./AppState";
-import { GameSettings } from "./GameSettings";
-import { Card } from "./Card";
-import ShareGame from "./ShareGame";
+import PlayerApp from "./PlayerApp";
 
 function App() {
-  const [state, setState] = useState(AppState.Setup);
-  const [gameSettings, setGameSettings] = useState<GameSettings | undefined>();
-  const [sequence, setSequence] = useState<Card[]>([]);
+  const [mode, setMode] = useState<GameMode | undefined>();
 
   return (
     <div>
-      {state === AppState.Setup && (
-        <GameSetup
-          onDone={(settings) => {
-            setGameSettings(settings);
-            setState(AppState.Share);
-          }}
-        />
+      {mode === undefined && (
+        <div>
+          <button type="button" onClick={() => setMode(GameMode.Answer)}>
+            Teacher
+          </button>
+          <button type="button" onClick={() => setMode(GameMode.Question)}>
+            Student
+          </button>
+        </div>
       )}
 
-      {state === AppState.Share && gameSettings && (
-        <ShareGame
-          gameSettings={gameSettings}
-          onPlay={() => setState(AppState.Playing)}
-        />
-      )}
+      {mode === GameMode.Answer && <ControllerApp />}
 
-      {state === AppState.Playing && (
-        <Game cardSequence={sequence} mode={GameMode.Answer} />
-      )}
+      {mode === GameMode.Question && <PlayerApp />}
     </div>
   );
 }
