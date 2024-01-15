@@ -7,9 +7,13 @@ export interface GameSettings {
 }
 
 export function encodeGameSettings({ cardSetSelection, seed }: GameSettings) {
+  if (seed === 0) {
+    return false;
+  }
+
   const cardSetsBits = cardSetSelection.map((x) => `${Number(x)}`).join("");
   const seedBits = seed.toString(2);
-  const allBits = `${cardSetsBits}${seedBits}`;
+  const allBits = `${seedBits}${cardSetsBits}`;
 
   return parseInt(allBits, 2).toString();
 }
@@ -17,10 +21,18 @@ export function encodeGameSettings({ cardSetSelection, seed }: GameSettings) {
 export function decodeGameSettings(
   code: string,
   allCardSets: CardSet[]
-): GameSettings {
+): GameSettings | false {
+  if (!code || typeof code !== "string" || !/^[0-9]+$/.test(code)) {
+    return false;
+  }
+
   const allBits = parseInt(code).toString(2);
-  const cardSetsBits = allBits.slice(0, allCardSets.length);
-  const seedBits = allBits.slice(cardSetsBits.length);
+  const cardSetsBits = allBits.slice(-allCardSets.length);
+  if (cardSetsBits.length !== allCardSets.length) {
+    return false;
+  }
+
+  const seedBits = allBits.slice(0, allBits.length - cardSetsBits.length);
 
   const cardSetSelection = cardSetsBits
     .split("")
@@ -30,7 +42,7 @@ export function decodeGameSettings(
     (_cardSet, cardSetIndex) => cardSetSelection[cardSetIndex]
   );
 
-  const seed = parseInt(seedBits, 2);
+  const seed = parseInt(seedBits || "0", 2);
 
   return {
     cardSets,
