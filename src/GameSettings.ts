@@ -1,4 +1,5 @@
 import { CardSet } from "./CardSet";
+import nonZeroRandomInt from "./nonZeroRandomInt";
 
 export interface GameSettings {
   cardSets: CardSet[];
@@ -10,17 +11,12 @@ export function createGameSettings(
   cardSets: CardSet[],
   cardSetSelection: boolean[]
 ) {
-  let nonZeroSeed = 0;
-  while (nonZeroSeed === 0) {
-    nonZeroSeed = Math.trunc(Math.random() * 1000);
-  }
-
   return {
     cardSets: cardSets.filter(
       (_cardSet, cardSetIndex) => cardSetSelection[cardSetIndex]
     ),
     cardSetSelection,
-    seed: nonZeroSeed,
+    seed: nonZeroRandomInt(1000),
   };
 }
 

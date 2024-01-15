@@ -7,10 +7,12 @@ import { GameMode } from "./GameMode";
 import { GameSettings } from "./GameSettings";
 import GameSetup from "./GameSetup";
 import ShareGame from "./ShareGame";
+import generateCardSequence from "./generateCardSequence";
 
 export default function ControllerApp() {
   const [state, setState] = useState(AppState.Setup);
   const [gameSettings, setGameSettings] = useState<GameSettings | undefined>();
+  const [sequence, setSequence] = useState<Card[] | undefined>();
 
   return (
     <div>
@@ -26,13 +28,18 @@ export default function ControllerApp() {
       {state === AppState.Share && gameSettings && (
         <ShareGame
           gameSettings={gameSettings}
-          onPlay={() => setState(AppState.Playing)}
+          onPlay={() => {
+            setState(AppState.Playing);
+            setSequence(
+              generateCardSequence(gameSettings.cardSets, gameSettings.seed)
+            );
+          }}
         />
       )}
 
-      {/* {state === AppState.Playing && (
+      {state === AppState.Playing && sequence && (
         <Game cardSequence={sequence} mode={GameMode.Answer} />
-      )} */}
+      )}
     </div>
   );
 }

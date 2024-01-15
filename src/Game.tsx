@@ -33,6 +33,7 @@ export default function Game({ cardSequence, mode }: GameProps) {
             setCurrentIndex(0);
             setGameStart(new Date().getTime());
           }}
+          mode={mode}
         />
       )}
       {gameRunning && (
