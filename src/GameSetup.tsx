@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Toggle from "./Toggle";
 import { createAllCardSets } from "./tabuada";
-import { GameSettings } from "./GameSettings";
+import { GameSettings, createGameSettings } from "./GameSettings";
 
 export interface GameSetupProps {
   onDone: (settings: GameSettings) => void;
@@ -42,15 +42,7 @@ export default function GameSetup({ onDone }: GameSetupProps) {
           className="border-2 border-gray-100 rounded-xl p-6 w-full md:w-2/3 cursor-pointer bg-teal-800 hover:border-teal-500 hover:bg-teal-700 disabled:bg-gray-700"
           type="button"
           disabled={!hasSelected}
-          onClick={() =>
-            onDone({
-              cardSets: cardSets.filter(
-                (_cardSet, cardSetIndex) => cardSetSelection[cardSetIndex]
-              ),
-              cardSetSelection,
-              seed: Math.trunc(Math.random() * 1000),
-            })
-          }
+          onClick={() => onDone(createGameSettings(cardSets, cardSetSelection))}
         >
           Next
         </button>

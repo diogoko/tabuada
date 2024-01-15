@@ -6,6 +6,24 @@ export interface GameSettings {
   seed: number;
 }
 
+export function createGameSettings(
+  cardSets: CardSet[],
+  cardSetSelection: boolean[]
+) {
+  let nonZeroSeed = 0;
+  while (nonZeroSeed === 0) {
+    nonZeroSeed = Math.trunc(Math.random() * 1000);
+  }
+
+  return {
+    cardSets: cardSets.filter(
+      (_cardSet, cardSetIndex) => cardSetSelection[cardSetIndex]
+    ),
+    cardSetSelection,
+    seed: nonZeroSeed,
+  };
+}
+
 export function encodeGameSettings({ cardSetSelection, seed }: GameSettings) {
   if (seed === 0) {
     return false;
