@@ -1,19 +1,40 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Card } from "./Card";
 import { GameMode } from "./GameMode";
 import CardRendering from "./CardRendering";
 import BeforeGameCard from "./BeforeGameCard";
 import AfterGameCard from "./AfterGameCard";
+import { GameSettings } from "./GameSettings";
+import seededRandomIntFn from "./seededRandomIntFn";
+import generateCardSequence from "./generateCardSequence";
+
+const GAME_SIZE = 5;
 
 export interface GameProps {
-  cardSequence: Card[];
+  gameSettings: GameSettings;
   mode: GameMode;
 }
 
-export default function Game({ cardSequence, mode }: GameProps) {
+export default function Game({ gameSettings, mode }: GameProps) {
   const [currentIndex, setCurrentIndex] = useState(-1);
   const [gameStart, setGameStart] = useState(0);
   const [gameEnd, setGameEnd] = useState(0);
+
+  const randomInt = useMemo(
+    () => seededRandomIntFn(gameSettings.seed),
+    [gameSettings.seed]
+  );
+
+  const [cardSequence, setCardSequence] = useState<Card[]>([]);
+
+  const prepareNewGame = useCallback(() => {
+    setCardSequence(
+      generateCardSequence(gameSettings.cardSets, randomInt, GAME_SIZE)
+    );
+    setCurrentIndex(-1);
+  }, [gameSettings.cardSets, randomInt]);
+
+  useEffect(() => prepareNewGame(), [prepareNewGame]);
 
   const beforeGame = currentIndex < 0;
   const gameRunning = currentIndex >= 0 && currentIndex < cardSequence.length;
@@ -45,7 +66,13 @@ export default function Game({ cardSequence, mode }: GameProps) {
           }}
         />
       )}
-      {gameEnded && <AfterGameCard gameEnd={gameEnd} gameStart={gameStart} />}
+      {gameEnded && (
+        <AfterGameCard
+          gameEnd={gameEnd}
+          gameStart={gameStart}
+          onRestart={() => prepareNewGame()}
+        />
+      )}
     </div>
   );
 }
