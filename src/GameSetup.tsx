@@ -2,6 +2,7 @@ import { useState } from "react";
 import Toggle from "./Toggle";
 import { createAllCardSets } from "./tabuada";
 import { GameSettings, createGameSettings } from "./GameSettings";
+import Button from "./Button";
 
 export interface GameSetupProps {
   onDone: (settings: GameSettings) => void;
@@ -26,7 +27,7 @@ export default function GameSetup({ onDone }: GameSetupProps) {
 
   return (
     <div className="flex flex-col gap-10">
-      <div className="grid md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
         {cardSets.map((cardSet, cardSetIndex) => (
           <Toggle
             key={cardSet.name}
@@ -39,14 +40,12 @@ export default function GameSetup({ onDone }: GameSetupProps) {
       </div>
 
       <div>
-        <button
-          className="border-2 border-gray-100 rounded-xl p-6 w-full md:w-2/3 cursor-pointer bg-teal-800 hover:border-teal-500 hover:bg-teal-700 disabled:bg-gray-700"
-          type="button"
+        <Button
           disabled={!hasSelected}
           onClick={() => onDone(createGameSettings(cardSets, cardSetSelection))}
         >
           Next
-        </button>
+        </Button>
       </div>
     </div>
   );

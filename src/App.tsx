@@ -1,30 +1,28 @@
 import { useState } from "react";
-import "./App.css";
 import ControllerApp from "./ControllerApp";
 import { GameMode } from "./GameMode";
 import PlayerApp from "./PlayerApp";
+import Button from "./Button";
 
 function App() {
   const [mode, setMode] = useState<GameMode | undefined>();
 
-  return (
-    <div>
-      {mode === undefined && (
-        <div>
-          <button type="button" onClick={() => setMode(GameMode.Answer)}>
-            Teacher
-          </button>
-          <button type="button" onClick={() => setMode(GameMode.Question)}>
-            Student
-          </button>
-        </div>
-      )}
+  if (mode === undefined) {
+    return (
+      <div className="flex flex-col gap-10">
+        <Button onClick={() => setMode(GameMode.Answer)}>Teacher</Button>
+        <Button onClick={() => setMode(GameMode.Question)}>Student</Button>
+      </div>
+    );
+  }
 
-      {mode === GameMode.Answer && <ControllerApp />}
+  if (mode === GameMode.Answer) {
+    return <ControllerApp />;
+  }
 
-      {mode === GameMode.Question && <PlayerApp />}
-    </div>
-  );
+  if (mode === GameMode.Question) {
+    return <PlayerApp />;
+  }
 }
 
 export default App;

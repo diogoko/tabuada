@@ -1,3 +1,4 @@
+import Button from "./Button";
 import { GameSettings, encodeGameSettings } from "./GameSettings";
 
 export interface ShareGameProps {
@@ -10,15 +11,9 @@ export default function ShareGame({ gameSettings, onPlay }: ShareGameProps) {
 
   return (
     <div className="flex flex-col gap-10">
-      <div>{gameCode}</div>
+      <div className="text-3xl tracking-widest text-center">{gameCode}</div>
       <div>
-        <button
-          className="border-2 border-gray-100 rounded-xl p-6 w-full md:w-2/3 cursor-pointer bg-teal-800 hover:border-teal-500 hover:bg-teal-700 disabled:bg-gray-700"
-          type="button"
-          onClick={() => onPlay()}
-        >
-          Play
-        </button>
+        <Button onClick={() => onPlay()}>Play</Button>
       </div>
     </div>
   );

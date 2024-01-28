@@ -17,8 +17,8 @@ export interface GameProps {
 
 export default function Game({ gameSettings, mode }: GameProps) {
   const [currentIndex, setCurrentIndex] = useState(-1);
-  const [gameStart, setGameStart] = useState(0);
-  const [gameEnd, setGameEnd] = useState(0);
+  const [gameStart, setGameStart] = useState<number>(0);
+  const [gameEnd, setGameEnd] = useState<number | undefined>();
 
   const randomInt = useMemo(
     () => seededRandomIntFn(gameSettings.seed),
@@ -46,33 +46,38 @@ export default function Game({ gameSettings, mode }: GameProps) {
     }
   }, [currentIndex, cardSequence.length]);
 
-  return (
-    <div>
-      {beforeGame && (
-        <BeforeGameCard
-          onStart={() => {
-            setCurrentIndex(0);
-            setGameStart(new Date().getTime());
-          }}
-          mode={mode}
-        />
-      )}
-      {gameRunning && (
-        <CardRendering
-          card={cardSequence[currentIndex]}
-          mode={mode}
-          onNext={() => {
-            setCurrentIndex(currentIndex + 1);
-          }}
-        />
-      )}
-      {gameEnded && (
-        <AfterGameCard
-          gameEnd={gameEnd}
-          gameStart={gameStart}
-          onRestart={() => prepareNewGame()}
-        />
-      )}
-    </div>
-  );
+  if (beforeGame) {
+    return (
+      <BeforeGameCard
+        onStart={() => {
+          setCurrentIndex(0);
+          setGameStart(new Date().getTime());
+          setGameEnd(undefined);
+        }}
+        mode={mode}
+      />
+    );
+  }
+
+  if (gameRunning) {
+    return (
+      <CardRendering
+        card={cardSequence[currentIndex]}
+        mode={mode}
+        onNext={() => {
+          setCurrentIndex(currentIndex + 1);
+        }}
+      />
+    );
+  }
+
+  if (gameEnded) {
+    return (
+      <AfterGameCard
+        gameEnd={gameEnd}
+        gameStart={gameStart}
+        onRestart={() => prepareNewGame()}
+      />
+    );
+  }
 }

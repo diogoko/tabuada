@@ -1,5 +1,4 @@
 import { useState } from "react";
-import "./App.css";
 import { AppState } from "./AppState";
 import Game from "./Game";
 import { GameMode } from "./GameMode";
@@ -11,29 +10,29 @@ export default function ControllerApp() {
   const [state, setState] = useState(AppState.Setup);
   const [gameSettings, setGameSettings] = useState<GameSettings | undefined>();
 
-  return (
-    <div>
-      {state === AppState.Setup && (
-        <GameSetup
-          onDone={(settings) => {
-            setGameSettings(settings);
-            setState(AppState.Share);
-          }}
-        />
-      )}
+  if (state === AppState.Setup) {
+    return (
+      <GameSetup
+        onDone={(settings) => {
+          setGameSettings(settings);
+          setState(AppState.Share);
+        }}
+      />
+    );
+  }
 
-      {state === AppState.Share && gameSettings && (
-        <ShareGame
-          gameSettings={gameSettings}
-          onPlay={() => {
-            setState(AppState.Playing);
-          }}
-        />
-      )}
+  if (state === AppState.Share && gameSettings) {
+    return (
+      <ShareGame
+        gameSettings={gameSettings}
+        onPlay={() => {
+          setState(AppState.Playing);
+        }}
+      />
+    );
+  }
 
-      {state === AppState.Playing && gameSettings && (
-        <Game gameSettings={gameSettings} mode={GameMode.Answer} />
-      )}
-    </div>
-  );
+  if (state === AppState.Playing && gameSettings) {
+    return <Game gameSettings={gameSettings} mode={GameMode.Answer} />;
+  }
 }

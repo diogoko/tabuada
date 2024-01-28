@@ -1,3 +1,4 @@
+import BaseCard from "./BaseCard";
 import { Card } from "./Card";
 import { GameMode } from "./GameMode";
 
@@ -13,11 +14,8 @@ export default function CardRendering({
   onNext,
 }: CardRenderingProps) {
   return (
-    <div
-      onClick={() => onNext()}
-      className="cursor-pointer select-none text-5xl"
-    >
+    <BaseCard onClick={() => onNext()}>
       {mode === GameMode.Question ? card.question : card.answer}
-    </div>
+    </BaseCard>
   );
 }

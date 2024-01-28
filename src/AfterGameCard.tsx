@@ -1,5 +1,7 @@
+import BaseCard from "./BaseCard";
+
 export interface AfterGameCardProps {
-  gameEnd: number;
+  gameEnd: number | undefined;
   gameStart: number;
   onRestart: () => void;
 }
@@ -9,15 +11,16 @@ export default function AfterGameCard({
   gameStart,
   onRestart,
 }: AfterGameCardProps) {
+  if (!gameEnd) {
+    return null;
+  }
+
   const empty = !gameEnd || !gameStart;
   const seconds = (gameEnd - gameStart) / 1000;
 
   return (
-    <div
-      className="cursor-pointer select-none text-5xl"
-      onClick={() => onRestart()}
-    >
-      {empty || seconds.toFixed(1)} s
-    </div>
+    <BaseCard onClick={() => onRestart()}>
+      <span className="text-green-300">{empty || seconds.toFixed(1)} s</span>
+    </BaseCard>
   );
 }
