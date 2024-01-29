@@ -22,7 +22,7 @@ export default function ConfigSharedGame({ onPlay }: ConfigSharedGameProps) {
       <div>
         <CodeInput value={gameCode} onChange={(value) => setGameCode(value)} />
       </div>
-      <div>
+      <div className="flex justify-center">
         <Button
           disabled={!gameSettings}
           onClick={() => onPlay(gameSettings as GameSettings)}
