@@ -8,7 +8,7 @@ import { GameSettings } from "./GameSettings";
 import seededRandomIntFn from "./seededRandomIntFn";
 import generateCardSequence from "./generateCardSequence";
 
-const GAME_SIZE = 5;
+const GAME_SIZE = 10;
 
 export interface GameProps {
   gameSettings: GameSettings;
