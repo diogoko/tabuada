@@ -39,7 +39,7 @@ export default function GameSetup({ onDone }: GameSetupProps) {
         ))}
       </div>
 
-      <div>
+      <div className="flex justify-center">
         <Button
           disabled={!hasSelected}
           onClick={() => onDone(createGameSettings(cardSets, cardSetSelection))}

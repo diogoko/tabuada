@@ -12,7 +12,7 @@ export default function Button({
 }: PropsWithChildren<ButtonProps>) {
   return (
     <button
-      className="border-2 border-gray-100 rounded-xl p-6 w-full md:w-2/3 cursor-pointer bg-teal-800 hover:border-teal-500 hover:bg-teal-700 disabled:bg-gray-700 text-3xl"
+      className="border-2 border-gray-100 rounded-xl p-6 cursor-pointer bg-teal-800 hover:border-teal-500 hover:bg-teal-700 disabled:bg-gray-700 text-3xl"
       type="button"
       onClick={() => onClick?.()}
       disabled={disabled}
