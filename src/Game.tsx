@@ -7,6 +7,7 @@ import AfterGameCard from "./AfterGameCard";
 import { GameSettings } from "./GameSettings";
 import seededRandomIntFn from "./seededRandomIntFn";
 import generateCardSequence from "./generateCardSequence";
+import { enterFullScreen } from "./fullscreen";
 
 const GAME_SIZE = 10;
 
@@ -32,6 +33,8 @@ export default function Game({ gameSettings, mode }: GameProps) {
       generateCardSequence(gameSettings.cardSets, randomInt, GAME_SIZE)
     );
     setCurrentIndex(-1);
+
+    enterFullScreen();
   }, [gameSettings.cardSets, randomInt]);
 
   useEffect(() => prepareNewGame(), [prepareNewGame]);
