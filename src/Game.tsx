@@ -17,6 +17,10 @@ export interface GameProps {
   mode: GameMode;
 }
 
+function isGameEnded(currentIndex: number, cardSequence: Card[]) {
+  return currentIndex >= cardSequence.length;
+}
+
 export default function Game({ gameSettings, mode }: GameProps) {
   const [currentIndex, setCurrentIndex] = useState(-1);
   const [gameStart, setGameStart] = useState<number>(0);
@@ -42,7 +46,7 @@ export default function Game({ gameSettings, mode }: GameProps) {
 
   const beforeGame = currentIndex < 0;
   const gameRunning = currentIndex >= 0 && currentIndex < cardSequence.length;
-  const gameEnded = currentIndex >= cardSequence.length;
+  const gameEnded = isGameEnded(currentIndex, cardSequence);
 
   useEffect(() => {
     if (currentIndex >= cardSequence.length) {
@@ -60,6 +64,7 @@ export default function Game({ gameSettings, mode }: GameProps) {
         onStart={async () => {
           if (mode === GameMode.Question) {
             await playCountdown();
+            playPageTurn();
           }
 
           setCurrentIndex(0);
@@ -77,7 +82,10 @@ export default function Game({ gameSettings, mode }: GameProps) {
         card={cardSequence[currentIndex]}
         mode={mode}
         onNext={() => {
-          if (mode === GameMode.Question) {
+          if (
+            mode === GameMode.Question &&
+            !isGameEnded(currentIndex, cardSequence)
+          ) {
             playPageTurn();
           }
 
