@@ -1,7 +1,7 @@
 import BaseCard from "./BaseCard";
 
 export interface AfterGameCardProps {
-  gameEnd: number | undefined;
+  gameEnd: number;
   gameStart: number;
   onRestart: () => void;
 }
@@ -11,10 +11,6 @@ export default function AfterGameCard({
   gameStart,
   onRestart,
 }: AfterGameCardProps) {
-  if (!gameEnd) {
-    return null;
-  }
-
   const empty = !gameEnd || !gameStart;
   const seconds = (gameEnd - gameStart) / 1000;
 

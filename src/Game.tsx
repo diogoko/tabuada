@@ -8,6 +8,7 @@ import { GameSettings } from "./GameSettings";
 import seededRandomIntFn from "./seededRandomIntFn";
 import generateCardSequence from "./generateCardSequence";
 import { enterFullScreen } from "./fullscreen";
+import { playCountdown, playGameEnded, playPageTurn } from "./audio";
 
 const GAME_SIZE = 10;
 
@@ -46,13 +47,21 @@ export default function Game({ gameSettings, mode }: GameProps) {
   useEffect(() => {
     if (currentIndex >= cardSequence.length) {
       setGameEnd(new Date().getTime());
+
+      if (mode === GameMode.Question) {
+        playGameEnded();
+      }
     }
-  }, [currentIndex, cardSequence.length]);
+  }, [currentIndex, cardSequence.length, mode]);
 
   if (beforeGame) {
     return (
       <BeforeGameCard
-        onStart={() => {
+        onStart={async () => {
+          if (mode === GameMode.Question) {
+            await playCountdown();
+          }
+
           setCurrentIndex(0);
           setGameStart(new Date().getTime());
           setGameEnd(undefined);
@@ -68,13 +77,17 @@ export default function Game({ gameSettings, mode }: GameProps) {
         card={cardSequence[currentIndex]}
         mode={mode}
         onNext={() => {
+          if (mode === GameMode.Question) {
+            playPageTurn();
+          }
+
           setCurrentIndex(currentIndex + 1);
         }}
       />
     );
   }
 
-  if (gameEnded) {
+  if (gameEnded && gameEnd) {
     return (
       <AfterGameCard
         gameEnd={gameEnd}

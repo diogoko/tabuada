@@ -13,7 +13,7 @@ export function playAudio(file: string) {
     audio.addEventListener("ended", endedHandler);
 
     audio.play();
-    console.log("playing");
+    console.log("playing", file);
   });
 }
 
