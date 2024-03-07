@@ -8,7 +8,13 @@ import { GameSettings } from "./GameSettings";
 import seededRandomIntFn from "./seededRandomIntFn";
 import generateCardSequence from "./generateCardSequence";
 import { enterFullScreen } from "./fullscreen";
-import { playCountdown, playGameEnded, playPageTurn } from "./audio";
+import {
+  COUNTDOWN_LENGTH_MS,
+  playCountdown,
+  playGameEnded,
+  playPageTurn,
+} from "./audio";
+import delay from "./delay";
 
 const GAME_SIZE = 10;
 
@@ -65,6 +71,9 @@ export default function Game({ gameSettings, mode }: GameProps) {
           if (mode === GameMode.Question) {
             await playCountdown();
             playPageTurn();
+          } else {
+            // Wait while sound is played
+            await delay(COUNTDOWN_LENGTH_MS);
           }
 
           setCurrentIndex(0);

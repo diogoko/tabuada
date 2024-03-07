@@ -17,6 +17,8 @@ export function playAudio(file: string) {
   });
 }
 
+export const COUNTDOWN_LENGTH_MS = 3037;
+
 export function playCountdown() {
   return playAudio(countdownSound);
 }
