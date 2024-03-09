@@ -3,9 +3,11 @@ import ControllerApp from "./ControllerApp";
 import { GameMode } from "./GameMode";
 import PlayerApp from "./PlayerApp";
 import Button from "./Button";
+import { getQueryParameter } from "./queryParameters";
 
 function App() {
-  const [mode, setMode] = useState<GameMode | undefined>();
+  const initialMode = getQueryParameter("code") ? GameMode.Question : undefined;
+  const [mode, setMode] = useState<GameMode | undefined>(initialMode);
 
   if (mode === undefined) {
     return (

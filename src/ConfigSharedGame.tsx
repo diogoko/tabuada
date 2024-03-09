@@ -3,6 +3,7 @@ import { GameSettings, decodeGameSettings } from "./GameSettings";
 import { createAllCardSets } from "./tabuada";
 import Button from "./Button";
 import CodeInput from "./CodeInput";
+import { getQueryParameter } from "./queryParameters";
 
 export interface ConfigSharedGameProps {
   onPlay: (gameSettings: GameSettings) => void;
@@ -11,7 +12,7 @@ export interface ConfigSharedGameProps {
 const cardSets = createAllCardSets();
 
 export default function ConfigSharedGame({ onPlay }: ConfigSharedGameProps) {
-  const [gameCode, setGameCode] = useState("");
+  const [gameCode, setGameCode] = useState(getQueryParameter("code") ?? "");
   const gameSettings = useMemo(
     () => decodeGameSettings(gameCode, cardSets),
     [gameCode]
