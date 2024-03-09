@@ -64,3 +64,15 @@ export function decodeGameSettings(
     seed,
   };
 }
+
+export function createGameUrl(gameCode: string) {
+  const url = new URL("https://diogoko.github.io/tabuada/");
+  url.searchParams.set("text", gameCode);
+  return url.toString();
+}
+
+export function createWhatsappUrl(text: string) {
+  const url = new URL("https://wa.me");
+  url.searchParams.set("text", text);
+  return url.toString();
+}
